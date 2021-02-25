@@ -3,7 +3,7 @@ import os
 from os.path import dirname
 import tensorflow.compat.v1 as tf
 
-import vpcore.frontend.netvlad_tf.layers as layers
+import globalfeature_ref.netvlad.layers as layers
 
 tf.disable_v2_behavior()
 
