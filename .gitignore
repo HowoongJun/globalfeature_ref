@@ -3,3 +3,4 @@ __pycache__
 *.index
 *.data-00000-of-00001
 .DS_Store
+data
