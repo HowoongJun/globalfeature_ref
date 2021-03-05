@@ -2,5 +2,5 @@ __pycache__
 *.meta
 *.index
 *.data-00000-of-00001
-.DS_Store
+*.DS_Store
 data
