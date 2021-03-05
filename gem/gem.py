@@ -1,7 +1,7 @@
 from gcore.hal import *
-
-#Just for test
-import globalfeature_ref.gem.examples.example_descriptor_extraction as gem
+import numpy as np
+from PIL import Image
+import globalfeature_ref.gem.nets as gem
 
 class CModel(CVisualLocalizationCore):
     def __init__(self):
@@ -18,13 +18,24 @@ class CModel(CVisualLocalizationCore):
 
     def Read(self):
         print("GeM Read!")
-        gem.main()
+        gem.gemPoolFC(self.__Image, 512, [1, 1/np.sqrt(2), 1/2], self.__gpuFlag)
+        gem.gemPoolLw(self.__Image, 512, [1, 1/np.sqrt(2), 1/2], self.__gpuFlag)
+        gem.macPoolImgNet(self.__Image, 512, [1, 1/np.sqrt(2), 1/2], self.__gpuFlag)
 
     def Write(self):
         print("GeM Write!")
 
-    def Control(self, oImage, bGPUFlag = False):
-        self.__gpuFlag = bGPUFlag
+    def Setting(self, eCommand:int, Value = None):
+        SetCmd = eSettingCmd(eCommand)
+
+        if(SetCmd == eSettingCmd.eSettingCmd_IMAGE_DATA):
+            self.__Image = Image.fromarray(np.array(Value))
+        
+        elif(SetCmd == eSettingCmd.eSettingCmd_IMAGE_CHANNEL):
+            self.__channel = np.uint8(Value)
+        
+        elif(SetCmd == eSettingCmd.eSettingCmd_CONFIG):
+            self.__gpuFlag = Value
 
     def Reset(self):
         print("GeM Reset!")
