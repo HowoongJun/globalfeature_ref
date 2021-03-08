@@ -3,19 +3,20 @@ import globalfeature_ref.netvlad.nets as nets
 import numpy as np
 import tensorflow.compat.v1 as tf
 import os 
+import common.Log as log
 
 class CModel(CVisualLocalizationCore):
     def __init__(self):
         tf.reset_default_graph()
 
     def __del__(self):
-        print("Netvlad Destructor!")
+        log.DebugPrint().info("Netvlad Destructor!")
 
     def Open(self):
-        print("Netvlad Open")
+        log.DebugPrint().info("Netvlad Open")
     
     def Close(self):
-        print("Netvlad Close!")
+        log.DebugPrint().info("Netvlad Close!")
 
     def Read(self):
         NetVLADOutput = self.sess.run(self.net_out, feed_dict={self.__image_batch: self.__Image})
