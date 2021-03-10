@@ -33,7 +33,6 @@ def gemPoolFC(img, input_resol, scales, isGPU):
         vec = extract_ss(net, transform(imresize(img, input_resol)).unsqueeze(0))
 
     vec = vec.data.cpu().numpy()
-    print(vec)
     # multi-scale extraction
     if(isGPU):
         vec = extract_ms(net, transform(imresize(img, input_resol)).unsqueeze(0).cuda(), ms = scales, msp = 1.0)
@@ -41,7 +40,7 @@ def gemPoolFC(img, input_resol, scales, isGPU):
         vec = extract_ms(net, transform(imresize(img, input_resol)).unsqueeze(0), ms = scales, msp = 1.0)
 
     vec = vec.data.cpu().numpy()
-    print(vec)
+    return vec
 
 def gemPoolLw(img, input_resol, scales, isGPU):
     print("use network trained with gem pooling, and apply the learned whitening transformation")
@@ -60,10 +59,8 @@ def gemPoolLw(img, input_resol, scales, isGPU):
         vec = extract_ss(net, transform(imresize(img, input_resol)).unsqueeze(0))
 
     vec = vec.data.cpu().numpy()
-    print(vec)
     whiten_ss = state['meta']['Lw']['retrieval-SfM-120k']['ss']
     vec = whitenapply(vec.reshape(-1,1), whiten_ss['m'], whiten_ss['P']).reshape(-1)
-    print(vec)
 
     # multi-scale extraction
     if(isGPU):
@@ -72,10 +69,9 @@ def gemPoolLw(img, input_resol, scales, isGPU):
         vec = extract_ms(net, transform(imresize(img, input_resol)).unsqueeze(0), ms = scales, msp = net.pool.p.item())
 
     vec = vec.data.cpu().numpy()
-    print(vec)
     whiten_ms = state['meta']['Lw']['retrieval-SfM-120k']['ms']
     vec = whitenapply(vec.reshape(-1,1), whiten_ms['m'], whiten_ms['P']).reshape(-1)
-    print(vec)
+    return vec
     
 def macPoolImgNet(img, input_resol, scales, isGPU):
     print("use pre-trained (on ImageNet) network with appended mac pooling")
@@ -92,7 +88,6 @@ def macPoolImgNet(img, input_resol, scales, isGPU):
         vec = extract_ss(net, transform(imresize(img, input_resol)).unsqueeze(0))
         
     vec = vec.data.cpu().numpy()
-    print(vec)
     # multi-scale extraction
     if(isGPU):
         vec = extract_ms(net, transform(imresize(img, input_resol)).unsqueeze(0).cuda(), ms = scales, msp = 1.0)
@@ -100,4 +95,5 @@ def macPoolImgNet(img, input_resol, scales, isGPU):
         vec = extract_ms(net, transform(imresize(img, input_resol)).unsqueeze(0), ms = scales, msp = 1.0)
         
     vec = vec.data.cpu().numpy()
-    print(vec)
+
+    return vec

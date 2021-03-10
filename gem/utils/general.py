@@ -1,5 +1,16 @@
 import os
 import hashlib
+from enum import IntEnum
+
+class eCallCmd(IntEnum):
+    eCall_gemPoolFC = 1
+    eCall_gemPoolLw = 2
+    eCall_MacPoolImgNet = 3
+
+def checkFolder(strFilePath):
+    if(not os.path.exists(strFilePath)):
+        os.makedirs(strFilePath)
+    return True
 
 def get_root():
     return os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
