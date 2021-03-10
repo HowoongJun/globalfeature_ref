@@ -23,10 +23,12 @@ class CModel(CVisualLocalizationCore):
         result = NetVLADOutput.astype('float32')
         return result
 
-    def Write(self, strDescPath, strImgName):
-        if(not os.path.isdir(strDescPath)):
-            os.mkdir(strDescPath)
+    def Write(self, strDbPath, strImgName):
+        strDescPath = strDbPath + "/netvlad/"
+        if(not os.path.exists(strDescPath)):
+            os.makedirs(strDescPath)
         np.save(strDescPath + "/" + strImgName, self.Read())
+        return True
 
     def Setting(self, eCommand:int, Value = None): 
         SetCmd = eSettingCmd(eCommand)
